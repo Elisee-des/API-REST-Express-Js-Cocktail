@@ -9,7 +9,7 @@ let DB = require('./db.config');
 
 
 /**********************************************************/
-/******* Initialisation de l'API *******/
+/**************** Initialisation de l'API ****************/
 const app = express();
 
 app.use(cors());
@@ -17,10 +17,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 /**********************************************************/
-/******* Mise en place du routage *******/
+/***************** Import des routages *******************/
+const user_router = require('./models/User');
+const cocktail_router = require('./models/Cocktail');
+
+/**********************************************************/
+/********************** Mise en place du routage **********/
 app.get('/', (req, res) => res.send(`J'suis en ligne. Bienvenu ! `));
 
-app.get('*', (req, res) => res.status(501).send(`Route non determiné`));
+app.use('users', user_router);
+app.use('cocktails', cocktail_router);
+
+app.get('*', (request, response) => response.status(501).send(`Route non determiné`));
 
 /**********************************************************/
 /******* Start serveur et test de demarrage *******/
